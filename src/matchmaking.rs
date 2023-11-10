@@ -160,6 +160,20 @@ impl<Manager> Matchmaking<Manager> {
         }
     }
 
+    /*
+        Refreshes all of the metadata for a lobby that you're not in right now.
+
+        You will never do this for lobbies you're a member of, that data will always be up to date. 
+        You can use this to refresh lobbies that you have obtained from RequestLobbyList or that are available via friends.
+    */
+    pub fn request_lobby_data(&self, lobby: LobbyId) -> bool {
+
+        unsafe {
+            return sys::SteamAPI_ISteamMatchmaking_RequestLobbyData(self.mm, lobby.0);     
+        }
+
+    }
+
     /// Returns the lobby metadata associated with the specified index
     pub fn lobby_data_by_index(&self, lobby: LobbyId, idx: u32) -> Option<(String, String)> {
         let mut key = [0i8; sys::k_nMaxLobbyKeyLength as usize];
